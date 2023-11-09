@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, Brush, XAxis, YAxis, CartesianGrid} from 'recharts'; 
 
-const employer_dashboard = () => {
+const EmployerDashboard = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ return (
         <div className="flex-1 flex flex-col justify-between border border-black rounded-lg p-4">
         <div className="text-left w-full">
           <h1 className="text-2xl font-bold text-black">BAR SCORE</h1>
-          <p className="text-xs font-bold text-black">What's a BAR Score?</p>
+          <p className="text-xs font-bold text-black">What&apos;s a BAR Score?</p>
         </div>
         <div className="flex-1 flex justify-center items-center">
          <p className="text-black flex items-baseline font-serif">
@@ -107,4 +107,4 @@ return (
   
 };
 
-export default employer_dashboard;
+export default EmployerDashboard;
