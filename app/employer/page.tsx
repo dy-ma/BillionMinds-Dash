@@ -143,8 +143,8 @@ return (
             <YAxis />
             <Tooltip />
             <Legend />
-            <Line type="monotone" dataKey="Employee1" stroke="#82ca9d" /> 
-            <Line type="monotone" dataKey="Employee2" stroke="#ffc658" />
+            <Line type="monotone" dataKey="Employee1" label="Employee 1" stroke="#82ca9d" /> 
+            <Line type="monotone" dataKey="Employee2" label="Employee 2" stroke="#ffc658" />
           </LineChart>
         </div>
        </div>
@@ -156,7 +156,7 @@ return (
         <TextField
           fullWidth
           variant="outlined"
-          placeholder="Search"
+          placeholder="Search Employees"
           InputProps={{
             endAdornment: (
               <IconButton type="submit" aria-label="search">
