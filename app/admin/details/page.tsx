@@ -7,49 +7,15 @@ import StatBoxComponent from '@/components/stat-box';
 export default function Details() {
 
     const lineData = [
-        {
-          "name": "Page A",
-          "uv": 4000,
-          "pv": 2400,
-          "amt": 2400
-        },
-        {
-          "name": "Page B",
-          "uv": 3000,
-          "pv": 1398,
-          "amt": 2210
-        },
-        {
-          "name": "Page C",
-          "uv": 2000,
-          "pv": 9800,
-          "amt": 2290
-        },
-        {
-          "name": "Page D",
-          "uv": 2780,
-          "pv": 3908,
-          "amt": 2000
-        },
-        {
-          "name": "Page E",
-          "uv": 1890,
-          "pv": 4800,
-          "amt": 2181
-        },
-        {
-          "name": "Page F",
-          "uv": 2390,
-          "pv": 3800,
-          "amt": 2500
-        },
-        {
-          "name": "Page G",
-          "uv": 3490,
-          "pv": 4300,
-          "amt": 2100
-        }
-      ]
+      {
+        time: "Page F",
+        ARScore: 2390,
+      },
+      {
+        time: "Page G",
+        ARScore: 3490,
+      },
+    ];
 
       const radarData = [
         {
@@ -91,14 +57,38 @@ export default function Details() {
       ];
 
     return (
-      <div className='bg-grey p-24'>
-        <div className='flex flex-row justify-between'>
-          <StatBoxComponent title='Highest Score' score={84} outOf={100}/>
-          <StatBoxComponent title='Highest Score' score={84} outOf={100}/>
-          <StatBoxComponent title='Highest Score' score={84} outOf={100}/>
-        </div> 
-        <LineChartComponent data={lineData}/>
-        <RadarChartComponent data={radarData}/>
+      <div className="flex flex-col bg-white p-24">
+        <div className="flex flex-row justify-between">
+          <StatBoxComponent title="Highest Score" score={84} outOf={100} />
+          <StatBoxComponent title="Highest Score" score={84} outOf={100} />
+          <StatBoxComponent title="Highest Score" score={84} outOf={100} />
+        </div>
+        <div className="bg-gradient-to-r from-grad1-start to-grad1-end my-[2%] flex flex-col shadow-lg rounded-lg overflow-hidden">
+          <div className="flex items-center text-black text-xl py-[1%] ml-[5%] from-grad1-start to-grad1-end">
+            <p>Chart Data</p>
+          </div>
+          <div className="flex flex-row items-center bg-white ">
+            <div className="w-full h-[50vh] p-4">
+              <LineChartComponent data={lineData} />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gradient-to-r from-grad1-start to-grad1-end flex flex-col shadow-lg rounded-lg overflow-hidden">
+          <div className="flex items-center text-black text-xl py-[1%] ml-[5%] from-grad1-start to-grad1-end">
+            <p>Organizational Data</p>
+          </div>
+          <div className="flex flex-row items-center bg-white ">
+            <div className="w-full h-[50vh] p-4">
+              <RadarChartComponent data={radarData} />
+            </div>
+          </div>
+        </div>
+
+        {/* <div className="w-[50%] h-[100%] p-4">
+          <LineChartComponent data={lineData} />
+        </div> */}
+        {/* <RadarChartComponent data={radarData} /> */}
       </div>
     );
 };
