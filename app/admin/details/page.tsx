@@ -3,6 +3,10 @@ import React from 'react';
 import LineChartComponent from '@/components/line-chart';
 import RadarChartComponent from '@/components/radar-chart';
 import StatBoxComponent from '@/components/stat-box';
+import Link from "next/link";
+import IconButton from "@mui/material/IconButton";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SearchIcon from "@mui/icons-material/Search";
   
 export default function Details() {
 
@@ -59,6 +63,11 @@ export default function Details() {
     return (
       <div className="flex flex-col bg-white p-24">
         <div className="flex flex-row justify-between">
+          <Link href="/admin">
+            <IconButton>
+              <ArrowBackIcon />
+            </IconButton>
+          </Link>
           <StatBoxComponent title="Highest Score" score={84} outOf={100} />
           <StatBoxComponent title="Highest Score" score={84} outOf={100} />
           <StatBoxComponent title="Highest Score" score={84} outOf={100} />

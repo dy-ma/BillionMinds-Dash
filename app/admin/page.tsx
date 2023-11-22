@@ -21,7 +21,7 @@ export default function Dash() {
 
 
     return (
-      <div className="flex flex-col h-screen bg-white px-[2%] py-[2%]">
+      <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-hidden">
         <div className=" mx-[5%] flex flex-row h-[5%]">
           <div className="flex items-end text-black text-2xl ml-[5%] mr-[60%] font-bold">
             <p>Welcome, Admin</p>
@@ -29,13 +29,13 @@ export default function Dash() {
           {/* <div className='flex text-black text-xl mr-10 items-end'> Home </div> */}
         </div>
 
-        <div className="mx-[10%]  h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg bg-gradient-to-r from-grad1-start to-grad1-end">
+        <div className="h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg bg-gradient-to-r from-grad1-start to-grad1-end">
           <div className="flex items-center text-black text-xl py-[1%] ">
             <p className="ml-[5%] font-raleway">Whereas Data</p>
-            <div className="flex flex-row ml-[75%] bg-main-grey rounded-lg text-sm hover:bg-grey">
+            <div className="flex flex-row ml-[70%] bg-main-grey rounded-lg text-sm hover:bg-grey">
               <div className="flex flex-row">
-                <p>Upload File</p>
-                <svg
+                <p className='mx-[10px]'>Upload File</p>
+                <svg className='mt-[1%]'
                   width="15"
                   height="15"
                   viewBox="0 0 15 15"
@@ -57,19 +57,36 @@ export default function Dash() {
               <LineChartComponent data={data} />
             </div>
 
-            <div className="flex flex-col ml-[10%] h-[80%] w-[20%] my-[10%]">
-              <div className="mx-[10%] mt-[5%] flex bg-main-grey justify-center text-black text-lg rounded-md text-center">
-                x% increase in skill
+            <div className="flex flex-col mr-[2%] h-[80%] w-[20%] my-[10%]">
+            <div className='flex flex-row'>
+                <div className="w-[10%] mt-[5%] flex bg-minty-green rounded-l-lg"></div>
+                <div className="w-[90%] mt-[5%] flex bg-main-grey justify-center text-black text-sm rounded-r-lg text-center">
+                  <p className='font-bold text-lg'>20%&nbsp;</p>
+                  <p className='flex items-center'>increase in score </p>
+                </div>
               </div>
+              <div className='flex flex-row'>
+                <div className="w-[10%] mt-[5%] flex bg-minty-green rounded-l-lg"></div>
+                <div className="w-[90%] mt-[5%] flex bg-main-grey justify-center text-black text-sm rounded-r-lg text-center">
+                  x%
+                </div>
+              </div>
+              <div className='flex flex-row'>
+                <div className="w-[10%] mt-[5%] flex bg-minty-green rounded-l-lg"></div>
+                <div className="w-[90%] mt-[5%] flex bg-main-grey justify-center text-black text-sm rounded-r-lg text-center">
+                  x%
+                </div>
+              </div>
+              
               <Link href="/admin/details">
-                <div className="mx-[10%] mt-[5%] flex bg-green justify-center text-black text-lg rounded-md hover:bg-slate-500 text-center">
+                <div className="mt-[5%] flex bg-green justify-center text-black text-lg rounded-md hover:bg-slate-500 text-center">
                   Details
                 </div>
               </Link>
             </div>
           </div>
         </div>
-        <div className="mx-[10%] bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg">
+        <div className="bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg">
           <div className="flex items-center text-black text-xl py-[1%] ml-[5%] ">
             <p>Trending Scores</p>
           </div>
@@ -78,7 +95,7 @@ export default function Dash() {
               <LineChartComponent data={data} />
             </div>
             <div className="flex flex-col ml-[10%] h-[80%] w-[20%] my-[10%]">
-              <div className="mx-[10%] flex justify-center text-black text-lg rounded-md bg-grey text-center">
+              <div className="p-4 mx-[10%] flex justify-start text-lef text-black text-md rounded-md bg-grey text-center">
                 Top Companies of the Month
               </div>
             </div>
@@ -86,7 +103,7 @@ export default function Dash() {
         </div>
 
         <div className="flex flex-row">
-          <div className="mx-[10%] bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg bg-[#EFF0E2]">
+          <div className="bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg bg-[#EFF0E2]">
             <div className="flex items-center text-black text-xl py-[1%] ml-[5%]">
               Top Scoreboard
             </div>
@@ -102,7 +119,7 @@ export default function Dash() {
               </div>
             </div>
           </div>
-          <div className="mx-[10%] bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg ">
+          <div className="ml-[10%] bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg ">
             <div className="flex items-center text-black text-xl py-[1%] ml-[5%]">
               View Organizations
             </div>
