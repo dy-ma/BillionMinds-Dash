@@ -29,7 +29,10 @@ const LineChartComponent: React.FC<LineChartProps> = ({ data }: LineChartProps) 
                             <Line type="monotone" dataKey="ARScore" stroke="#82ca9d" />
                         </LineChart>
                         :
-                        <p>Data Error: Placeholder</p>
+                        <div>
+                            <p>Data Error</p>
+                            <p>Displaying placeholder</p>
+                        </div>
                     }
 
                 </ResponsiveContainer>
