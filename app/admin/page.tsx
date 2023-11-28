@@ -5,6 +5,9 @@ import { ResponsiveContainer, LineChart, Bar, Brush, XAxis,
     YAxis, CartesianGrid, Tooltip, Line, Legend} from 'recharts'; 
 import Link from "next/link";
 
+import { raleway } from '../fonts';
+import { Raleway } from 'next/font/google';
+
 export default function Dash() {
 
    const data = [
@@ -21,7 +24,7 @@ export default function Dash() {
 
 
     return (
-      <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-hidden">
+      <div className={`flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-hidden`}>
         <div className=" mx-[5%] flex flex-row h-[5%]">
           <div className="flex items-end text-black text-2xl ml-[5%] mr-[60%] font-bold">
             <p>Welcome, Admin</p>
@@ -31,7 +34,7 @@ export default function Dash() {
 
         <div className="h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg bg-gradient-to-r from-grad1-start to-grad1-end">
           <div className="flex items-center text-black text-xl py-[1%] ">
-            <p className="ml-[5%] font-raleway">Whereas Data</p>
+            <p className="ml-[5%]">Whereas Data</p>
             <div className="flex flex-row ml-[70%] bg-main-grey rounded-lg text-sm hover:bg-grey">
               <div className="flex flex-row">
                 <p className='mx-[10px]'>Upload File</p>
