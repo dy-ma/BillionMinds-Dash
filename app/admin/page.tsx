@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import LineChartComponent from "@/components/line-chart";
 import Link from "next/link";
 
+import { raleway } from '../fonts';
+import { Raleway } from 'next/font/google';
 
 export default function Dash() {
 
@@ -13,14 +15,13 @@ export default function Dash() {
       .then(res => res.json())
       .then(data => setData(data))
   }, [])
-
+  
   return (
     <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-hidden">
       <div className=" mx-[5%] flex flex-row h-[5%]">
         <div className="flex items-end text-black text-2xl ml-[5%] mr-[60%] font-bold">
           <p>Welcome, Admin</p>
         </div>
-        {/* <div className='flex text-black text-xl mr-10 items-end'> Home </div> */}
       </div>
 
       <div className="h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg bg-gradient-to-r from-grad1-start to-grad1-end">
