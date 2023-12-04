@@ -43,7 +43,7 @@ export async function GET() {
   console.log(record);
 
   if (record) {
-    return Response.json([]);
+    return Response.json(record);
   }
   return Response.json([]);
 }
