@@ -22,6 +22,8 @@ import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
 
     async function renderChart(slug: string | string[] | undefined) {
+      let domchart = document.getElementById("chart")
+      if (!domchart) return;
       const sdk = new ChartsEmbedSDK({
         baseUrl: "https://charts.mongodb.com/charts-project-0-virfw"
       });
@@ -29,12 +31,12 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
       const chart = sdk.createChart({
         chartId: "656d15bb-96af-44f0-86ae-c9852122806d"
       });
-      await chart.render(document.getElementById("chart"));
+      await chart.render(domchart);
       chart.setFilter({ "Name": slug });
     }
  useEffect(() => { 
     renderChart(params.slug);
-  }, []);
+  }, [params.slug]);
 return (
   <div className="h-screen bg-white overflow-auto flex flex-col items-center">
      <div className="w-11/12 h-full mt-4 border border-black rounded-lg p-4">
