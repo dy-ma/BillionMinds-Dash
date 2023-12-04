@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useLayoutEffect } from 'react';
+import { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
@@ -27,7 +27,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
     getID();
   }, [params.slug]);
 
-  async function renderChart(elementID: string, chartID: string, filterName: string) {
+  const renderChart = useCallback(async (elementID: string, chartID: string, filterName: string) => {
     let domchart = document.getElementById(elementID)
     if (!domchart) return;
     const sdk = new ChartsEmbedSDK({
@@ -41,13 +41,13 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
     await chart.render(domchart);
 
     chart.setFilter({ [filterName]: +ID });
-  }
+  }, [ID]);
 
   useEffect(() => {
     renderChart("chart", "656d15bb-96af-44f0-86ae-c9852122806d", "ID");
     renderChart("ars", "656d101a-0551-44e8-8681-8f652d52cdf2", "AccountID");
     // Render chart for tab 3 only when the tab is selected
-  }, [isIDLoaded, ID, renderChart]);
+  });
 
   return (
     <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-scroll">
@@ -165,7 +165,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
           <Tabs.Content
             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
             value="tab3"
-            >
+          >
             <div id="badges" className="w-full h-full" />
           </Tabs.Content>
         </Tabs.Root>
