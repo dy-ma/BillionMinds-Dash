@@ -1,34 +1,31 @@
 "use client";
-import React, { use } from 'react';
-import { useState, useEffect } from 'react';
-import TextField from '@mui/material/TextField';
-import IconButton from '@mui/material/IconButton';
-import SearchIcon from '@mui/icons-material/Search';
+import { useState, useEffect, useLayoutEffect } from 'react';
 import * as Tabs from '@radix-ui/react-tabs';
-
-// import LineChartComponent from '@/components/line-chart';
-// import { LineChart, Brush, XAxis, YAxis, CartesianGrid, Tooltip, Line, Legend} from 'recharts'; 
 import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
-import { render } from 'react-dom';
-import { MongoClient } from 'mongodb';
-
-// interface LineChartProps {
-//   data:Array<{
-//       time: string;
-//       ARScore: number;
-//   }>;
-// }
-
 
 
 const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
   const [ID, setID] = useState("1");
+  const [isIDLoaded, setIsIDLoaded] = useState(false);
+  const [participationRate, setRate] = useState(54.89);
 
-  async function getID() {
-    const res = await fetch("/api/getID/" + params.slug);
-    let id = await res.json();
-    setID(id.ID);
-  }
+  useEffect(() => {
+    async function getID() {
+      try {
+        const res = await fetch("/api/getID/" + params.slug);
+        if (!res.ok) {
+          throw new Error("Failed to fetch ID");
+        }
+        const idData = await res.json();
+        setID(idData.ID);
+      } catch (error) {
+        console.error("Error fetching ID:", error);
+        // Handle error as needed
+      }
+    }
+
+    getID();
+  }, [params.slug]);
 
   async function renderChart(elementID: string, chartID: string, filterName: string) {
     let domchart = document.getElementById(elementID)
@@ -40,84 +37,18 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
     const chart = sdk.createChart({
       "chartId": chartID
     });
+
     await chart.render(domchart);
-    console.log(ID)
+
     chart.setFilter({ [filterName]: +ID });
   }
-  useEffect(() => {
-    getID()
-  }, [params.slug]);
+
   useEffect(() => {
     renderChart("chart", "656d15bb-96af-44f0-86ae-c9852122806d", "ID");
     renderChart("ars", "656d101a-0551-44e8-8681-8f652d52cdf2", "AccountID");
-  }, [ID]);
+    // Render chart for tab 3 only when the tab is selected
+  }, [isIDLoaded, ID]);
 
-  // return (
-  //   <div className="h-screen bg-white overflow-auto flex flex-col items-center">
-  //      {/* <div className="w-11/12 h-full mt-4 border border-black rounded-lg p-4">
-  //        <div id="chart" className = "w-full h-full" />
-  //      </div> */}
-
-  //       <div className="flex flex-row gap-4">
-  //         <div className="flex-2 flex flex-col justify-between">
-  //           <div className="text-left w-full">
-  //             <h1 className="text-2xl font-bold font-serif text-black">
-  //               {params.slug}&apos;s AR Score
-  //             </h1>
-  //             <p className="text-xs font-bold font-serif text-gray-500">
-  //               What&apos;s an AR Score?
-  //             </p>
-  //           </div>
-  //           <div className="flex-1 flex justify-center items-center">
-  //             <p className="flex items-baseline font-serif">
-  //               <span className="text-6xl font-bold mr-2 text-teal-500">56</span>
-  //               <span className="text-2xl text-black "> out of 100</span>
-  //             </p>
-  //           </div>
-  //         </div>
-
-  //         <div className="flex-1 flex justify-center items-center bg-white">
-  //           {/* <div className="w-full h-[50vh] p-4">
-  //             <LineChartComponent data={data} />
-  //           </div> */}
-  //         </div>
-  //       </div>
-
-
-  //     <div className="w-10/12 mt-4 flex flex-row gap-4 pt-5">
-  //      <div className="flex-1 flex flex-col justify-between border border-black rounded-lg p-4">
-  //        <div className="text-center w-full h-20">
-  //         <h1 className="text-2xl font-bold font-serif text-black">
-  //           Trending Scores
-  //         </h1>
-  //       </div>
-
-  //     </div>
-
-  //       <div className="flex-1 flex flex-col border border-black rounded-lg p-4">
-  //         <div className="text-center w-full mb-4">
-  //           <h1 className="text-2xl font-bold font-serif text-black">
-  //             View Employees
-  //           </h1>
-  //         </div>
-  //         <div className="flex items-center">
-  //           <TextField
-  //             fullWidth
-  //             variant="outlined"
-  //             placeholder="Search Employees"
-  //             InputProps={{
-  //               endAdornment: (
-  //                 <IconButton type="submit" aria-label="search">
-  //                   <SearchIcon />
-  //                 </IconButton>
-  //               ),
-  //             }}
-  //           />
-  //         </div>
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
   return (
     <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-scroll">
       <div className="flex flex-col h-auto">
@@ -137,7 +68,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
         <div className="h-full w-[30%] my-[2%] flex flex-col shadow-lg rounded-lg">
           <div className="flex-1 flex justify-center items-center p-4">
             <p className="flex items-baseline font-serif">
-              <span className="text-6xl font-bold mr-2 text-teal-500">56</span>
+              <span className="text-6xl font-bold mr-2 text-teal-500">98</span>
               <span className="text-2xl text-black "> out of 100</span>
             </p>
           </div>
@@ -174,6 +105,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
             <Tabs.Trigger
               className="bg-white px-5 h-[45px] flex-1 flex items-center justify-center text-[15px] leading-none text-mauve11 select-none first:rounded-tl-md last:rounded-tr-md hover:text-violet11 data-[state=active]:text-violet11 data-[state=active]:shadow-[inset_0_-1px_0_0,0_1px_0_0] data-[state=active]:shadow-current data-[state=active]:focus:relative data-[state=active]:focus:shadow-[0_0_0_2px] data-[state=active]:focus:shadow-black outline-none cursor-default"
               value="tab3"
+              onClick={() => renderChart("badges", "656d15bb-96af-44f0-86ae-c9852122806d", "ID")}
             >
               Social Engagement
             </Tabs.Trigger>
@@ -197,7 +129,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
                   <h1 className="text-lg text-black">
                     Overall Participation Rate
                   </h1>
-                  <span className="text-6xl font-bold mr-2 text-teal-500">56.89%</span>
+                  <span className="text-6xl font-bold mr-2 text-teal-500">{participationRate}</span>
                 </div>
               </div>
               <div className='flex flex-col h-[100%] w-[60%] p-4 ml-[2%]'>
@@ -221,7 +153,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
                     </h1>
                   </div>
                 </div>
-                
+
               </div>
             </div>
           </Tabs.Content>
@@ -229,32 +161,15 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
             className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
             value="tab2"
           >
-            
+          </Tabs.Content>
+          <Tabs.Content
+            className="grow p-5 bg-white rounded-b-md outline-none focus:shadow-[0_0_0_2px] focus:shadow-black"
+            value="tab3"
+            >
+            <div id="badges" className="w-full h-full" />
           </Tabs.Content>
         </Tabs.Root>
       </div>
-      
-      {/* <div className="bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] flex flex-col shadow-lg rounded-lg">
-      <div className="flex items-center text-black text-xl py-[1%] ml-[5%] ">
-        <p>Trending Scores</p>
-      </div>
-      <div className="flex flex-row items-center bg-white h-full">
-        <div className="w-full h-full p-4">
-          <LineChartComponent data={data} />
-        </div>
-        <div className="flex flex-col ml-[10%] h-[80%] w-[20%] my-[10%]">
-          <div className="p-4 mx-[10%] flex justify-start text-lef text-black text-md rounded-md bg-grey text-center">
-            Top Companies of the Month
-          </div>
-        </div>
-      </div>
-    </div> */}
-
-      {/* <div className=" mx-[5%] flex flex-row h-[5%]">
-      <div className="flex items-end text-black text-2xl font-bold">
-        <p>Organization Data</p>
-      </div>
-    </div>    */}
     </div>
   );
 

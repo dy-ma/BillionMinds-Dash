@@ -27,40 +27,6 @@ export default function Dash() {
           <p>Welcome, Admin</p>
         </div>
       </div>
-     <div className="flex flex-row">
-        <div className="bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg bg-[#EFF0E2]">
-          <div className="flex items-center text-black text-xl py-[1%] ml-[5%]">
-            Top Scoreboard
-          </div>
-          <div className="flex flex-col items-center bg-grey h-full">
-            <div className="flex justify-center text-center text-black bg-white w-full h-full ">
-              1 &nbsp; Company 1 score of x
-            </div>
-            <div className="flex justify-center text-center text-black bg-white w-full h-full ">
-              1 &nbsp; Company 1 score of x
-            </div>
-            <div className="flex justify-center text-center text-black bg-white w-full h-full">
-              1 &nbsp; Company 1 score of x
-            </div>
-          </div>
-        </div>
-        <div className="ml-[10%] bg-gradient-to-r from-grad1-start to-grad1-end h-[30%] my-[2%] w-full flex flex-col shadow-lg rounded-lg ">
-          <div className="flex items-center text-black text-xl py-[1%] ml-[5%]">
-            View Organizations
-          </div>
-          <div className="flex flex-row items-center bg-white h-full mt-[5%]">
-            <div className="flex mx-[5%] w-full justify-center text-black text-lg rounded-md bg-main-grey text-center">
-              Export
-            </div>
-            <div className="flex mx-[5%] w-full justify-center text-black text-lg rounded-md bg-main-grey text-center">
-              Favorites
-            </div>
-            <div className="flex mx-[5%] w-full justify-center text-black text-lg rounded-md bg-main-grey text-center">
-              <Link href="/admin/all">View All</Link>
-            </div>
-          </div>
-        </div>
-      </div>
       <div className="h-auto my-[2%] flex flex-col shadow-lg rounded-lg bg-gradient-to-r from-grad1-start to-grad1-end">
         <div className="flex items-center text-black text-xl py-[1%] ">
           <p className="ml-[5%] font-raleway">Data</p>

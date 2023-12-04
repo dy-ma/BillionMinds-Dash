@@ -20,7 +20,8 @@
     "next": "^14.0.3",
     "react": "^18",
     "react-dom": "^18",
-    "recharts": "^2.9.3"
+    "recharts": "^2.9.3",
+    "sharp": "^0.33.0"
   },
   "devDependencies": {
     "@types/node": "^20",

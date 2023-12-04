@@ -1,4 +1,3 @@
-import path from 'path';
 import 'dotenv/config';
 
 import { MongoClient } from "mongodb"
@@ -44,7 +43,7 @@ export async function GET(
   const slug = params.slug.toLowerCase() // Name of Employer slug
   let record = await coll.aggregate(getAgg(slug)).toArray();
 
-  if (record) {
+  if (record && record[0]) {
     return Response.json({"ID": record[0].AccountID});
   }
   return Response.json({"ID": "invalid"});
