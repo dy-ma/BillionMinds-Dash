@@ -6,7 +6,6 @@ import ChartsEmbedSDK from "@mongodb-js/charts-embed-dom";
 
 const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
   const [ID, setID] = useState("1");
-  const [isIDLoaded, setIsIDLoaded] = useState(false);
   const [participationRate, setRate] = useState(54.89);
 
   useEffect(() => {
