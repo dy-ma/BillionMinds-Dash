@@ -4,47 +4,27 @@ import { MongoClient } from "mongodb"
 const mongodbURI = process.env.MONGODB_URI;
 
 
-function getAgg(name: string): Array<Object> {
-  return [
-    {
-      '$project': {
-        '_id': 0,
-        'AccountName': {
-          '$toLower': '$Name'
-        },
-        'AccountID': '$ID'
-      }
-    }, {
-      '$addFields': {
-        'AccountName': {
-          '$replaceOne': {
-            'input': '$AccountName',
-            'find': ' ',
-            'replacement': ''
-          }
-        }
-      }
-    }, {
-      '$match': {
-        'AccountName': name.toLowerCase()
-      }
-    }
-  ]
-}
-
 export async function GET(
   request: Request,
   { params }: { params: { slug: string } }
 ) {
+
+  const filter = {
+    'Slug': params.slug
+  };
+  const projection = {
+    'ID': 1
+  };
+
   if (!mongodbURI) return;
   let client = new MongoClient(mongodbURI);
   let coll = client.db("billionminds").collection("employers");
 
-  const slug = params.slug.toLowerCase() // Name of Employer slug
-  let record = await coll.aggregate(getAgg(slug)).toArray();
+  const cursor = coll.find(filter, { projection });
+  const record = await cursor.toArray();
 
   if (record && record[0]) {
-    return Response.json({"ID": record[0].AccountID});
+    return Response.json({ "ID": record[0].ID });
   }
-  return Response.json({"ID": "invalid"});
+  return Response.json({ "ID": "invalid" });
 }

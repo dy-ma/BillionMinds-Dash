@@ -16,6 +16,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
           throw new Error("Failed to fetch ID");
         }
         const idData = await res.json();
+        console.log(idData.ID)
         setID(idData.ID);
       } catch (error) {
         console.error("Error fetching ID:", error);
@@ -42,11 +43,11 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
     chart.setFilter({ [filterName]: +ID });
   }, [ID]);
 
-  useEffect(() => {
-    renderChart("chart", "656d15bb-96af-44f0-86ae-c9852122806d", "ID");
+  useLayoutEffect(() => {
+    // renderChart("chart", "656d15bb-96af-44f0-86ae-c9852122806d", "ID");
     renderChart("ars", "656d101a-0551-44e8-8681-8f652d52cdf2", "AccountID");
     // Render chart for tab 3 only when the tab is selected
-  });
+  }, [ID]);
 
   return (
     <div className="flex flex-col h-screen bg-white px-[10%] py-[2%] text-black text-clip overflow-scroll">
