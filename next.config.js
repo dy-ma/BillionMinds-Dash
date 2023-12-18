@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
 
-module.exports = nextConfig
+// Uncomment the following 2 lines to use Vercel
+// module.exports = {}
+
+// Using Containers for deploying on GCP
+module.exports = {
+    output: 'standalone',
+}
