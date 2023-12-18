@@ -1,4 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# BillionMinds Dashboard
+
+This is a project from CodeLab UC Davis, in partnership with BillionMinds.
 
 ## Getting Started
 
@@ -6,12 +8,6 @@ First, run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -20,17 +16,205 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+## Before Pushing Changes
 
-To learn more about Next.js, take a look at the following resources:
+Make sure to test the build locally and make sure there are no errors that would prevent deployment.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+# If all checks are green, then (optionally) run
+npm run start
+# to start a local server and check that the page looks correct
+# Finally, push
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## High Level Overview of Backend
 
-## Deploy on Vercel
+Components of our backend
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Data Fetching with Next.js [Route Handlers](https://nextjs.org/docs/app/building-your-application/routing/route-handlers)
+- MongoDB database
+- Serverless update functions
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+First, in lieu of a single monolithic backend server, we will use Next.js' route handler features to create API-routes in Next.js. API routes are placed in files name `route.js|ts` within the `/app` directory.
+
+These work the same as pages in the `/app` directory, except these routes won't have associated pages displayed on the frontend. To avoid confusion with frontend pages, we will place any routes in a `/app/api` subdirectory, with each route nested within.
+
+These route handlers will query the MongoDB database, with API keys safely away from the frontend. These queries should be relatively simple, as MongoDB will have the data in the necessary format.
+
+Serverless functions running on AWS lambda, GCP Cloud Functions, or Vercel Serverless will handle
+
+1. Fetching data from Active Campaign, Brilliant Assessments, Typeform, Accredible, any other APIs, etc.
+2. Computing averages, percentages, or any other summary statistic we will need to show in the frontend.
+3. Posting the data to the MongoDB database.
+
+The serverless functions should run in response to a cron job set to expire every 1 day. More info on these functions is listed below.
+
+## Updating the Database
+
+### Employee Data
+
+The database contains individual user scores as a collection `employee_data` to closer resemble the data format in Active Campaign. The `employer_data` collection documents hold summary data for organizations. These are calculated from `employee_data`.
+
+A sample document from `employee_data` is shown below.
+
+```js
+{
+  "_id": id, // Document id for MongoDB
+  "ID": 5701, // Contact ID in Active Campaign
+  "Email": "contact@account.com",
+  "Name": {
+    "First": "con",
+    "Last": "tact"
+  },
+  "Account": {
+    "Name": "account", // Name of Employer
+    "ID": 363 // ID of Employer on Active Campaign
+  },
+  "IndividualEngagement": {
+    "Score": 10,
+    "Streak": {
+      "Current": 0,
+      "Longest": 4
+    }
+  },
+  "Learn": {
+    "FundamentalsComplete": null,
+    "Badges": {
+      "Wellbeing": true,
+      "Organization": false,
+      "Motivation": false,
+      "Balance": false,
+      "Resilience": false
+    }
+  },
+  "Do": {
+    "Created": {
+      "Spaces": {
+        "Total": 7,
+        "LastWeek": 2
+      },
+      "Actions": {
+        "Total": 6,
+        "LastWeek": 2
+      },
+      "Outcomes": {
+        "Total": 3,
+        "LastWeek": 1
+      },
+      "Changes": {
+        "Total": 2,
+        "LastWeek": 2
+      }
+    },
+    "IndividualAssessmentTaken": null,
+    "WorkbookDownloaded": null
+  },
+  "SkillVerification": {
+    "Exams": {
+      "Fundamentals": {
+        "Taken": null,
+        "Passed": false
+      },
+      "Mastery": {
+        "Taken": null,
+        "Passed": false
+      }
+    }
+  },
+  "SocialGroupEngagement": {
+    "PassedFirstVideo": null,
+    "QuestionsPosted": null,
+    "RepliesOnSlack": null,
+    "PostsOnLinkedIn": null,
+    "BookedCallWithGuide": null,
+    "PostedPersonalExperience": null
+  },
+  "SelfReported": {
+    "IndividualAptitude": {
+      "Wellbeing": null,
+      "Organization": null,
+      "Control": null,
+      "Balance": null,
+      "Motivation": null,
+      "AR": null
+    },
+    "OrganizationalSupport": {
+      "EmployeeReadinessScore": null,
+      "InfrastructureScore": null,
+      "PolicyScore": null,
+      "CultureScore": null
+    }
+  }
+}
+```
+
+### Storing Calculated AR Scores
+
+```ts
+{
+  accountId: int;
+  accountName: string;
+  startDate: date;
+  validThroughDate: date;
+  score: float64;
+}
+```
+
+- `startDate`: date of score calculation.
+- `validThroughDate`: last date for which this score is valid. If score doesn't change between days, don't add a new document, just increment this date field.
+- `score`: Calculated AR Score for this date range. This will likely be cast to an integer before being displayed.
+
+### Updating Tag Fields in Database
+
+Updating the tag fields in the database will take place in a serverless function interfacing with MongoDB. The function will be triggered by a cron job set to fire once-a-day.
+
+Most of the AR inputs are tag fields in Active Campaign (AC).
+
+For example
+
+- Overall Participation Rate $= \frac{\text{Number of contacts with the tag } Status: Active}{\text{Number of Total Employees}}$
+
+This calculation will be reused, just counting different tags.
+
+The general algorithm for updating the database will be as follows.
+
+```js
+funtion updateTags() {
+    request tags from Active Campaign
+    count results of tags in hashmap
+    populate a db query
+    send query to MongoDB
+}
+```
+
+The hashmap should resemble this basic structure.
+
+```ts
+{
+  accountId: int;
+  totalEmployeeCount: int;
+  activeEmployeeCount: int;
+  hasFundamentalsBadgeCount: int;
+  hasWellbeingBadgeCount: int;
+}
+```
+
+### Updating Engagement Score
+
+Scores are updated separately because they are not tag fields in AC. Thus, they are queried differently.
+
+Each contact has an engagement score on Active Campaign (AC).
+
+A serverless function will query the engagement scores for all contacts (employees) within an account (employer).
+
+The function should resemble the following
+
+```
+function updateAverageEngagementScore() {
+    scoreObjects = GET list of engagement scores for an organization
+    average = scoreObjects.reduce((a, b) => a.engagement + b.engagement) / scoreObjects.length
+    populate mongodb query
+    send Mongodb query
+}
+```
