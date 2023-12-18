@@ -11,14 +11,15 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mongodb-js/charts-embed-dom": "^3.2.1",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
+    "@radix-ui/react-tabs": "^1.0.4",
     "dotenv": "^16.3.1",
     "mongodb": "^6.3.0",
     "next": "^14.0.3",
     "react": "^18",
-    "react-dom": "^18",
-    "recharts": "^2.9.3"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",

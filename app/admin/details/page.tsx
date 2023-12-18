@@ -1,12 +1,9 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import LineChartComponent from '@/components/line-chart';
-import RadarChartComponent from '@/components/radar-chart';
 import StatBoxComponent from '@/components/stat-box';
 import Link from "next/link";
 import IconButton from "@mui/material/IconButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SearchIcon from "@mui/icons-material/Search";
 
 export default function Details() {
 
@@ -75,7 +72,7 @@ export default function Details() {
         </div>
         <div className="flex flex-row items-center bg-white ">
           <div className="w-full h-[50vh] p-4">
-            <LineChartComponent data={data} />
+            LineChart
           </div>
         </div>
       </div>
@@ -86,7 +83,7 @@ export default function Details() {
         </div>
         <div className="flex flex-row items-center bg-white ">
           <div className="w-full h-[50vh] p-4">
-            <RadarChartComponent data={radarData} />
+            RadarChart placeholder
           </div>
         </div>
       </div>
