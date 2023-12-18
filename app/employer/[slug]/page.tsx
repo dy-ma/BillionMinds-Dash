@@ -61,12 +61,14 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
     async function getEmployerData() {
       try {
         const res = await fetch("/api/getEmployerData/" + params.slug);
+
         if (!res.ok) {
           throw new Error("Failed to fetch ID");
         }
         const idData = await res.json();
 
         console.log(idData)
+
         setID(idData.ID);
         setPRate(idData.ParticipationRate);
         setARScore(idData.ARScore);
@@ -75,8 +77,7 @@ const EmployerDashboard = ({ params }: { params: { slug: string } }) => {
         setName(idData.Name);
 
       } catch (error) {
-        console.error("Error fetching ID:", error);
-        // Handle error as needed
+        console.error(error);
       }
     }
 

@@ -50,7 +50,7 @@ export async function GET(
       "ARScore": score,
       "AvgEngagementScore": avgEngagement,
       "AvgStreak": avgStreak
-    });
+    }, {status: 200});
   }
-  return Response.json({ "ID": "invalid" });
+  return Response.json({ "ID": "invalid" }, {status: 500});
 }
